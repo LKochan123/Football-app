@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football statistics</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/0746edf571.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="top">
+            <h1>Top 5 leagues</h1>
+            <div class="main-info">
+                <div>
+                    <h2 class="league-name">Premier league</h2>
+                    <input type="text" placeholder="Podaj nazwę ligi..." class="league-input">
+                    <input type="number" placeholder="Podaj rok rozgrywek..." class="year-input">
+                    <button>Send</button>
+                    <p class="warning">Warning!</p>
+                </div>
+                <img src="" alt="actual league logo" class="league-flag">
+            </div>
+        </div>
+
+        <div class="bottom">            
+            <div class="actual-statistics">
+                <div class="info-box">
+                    <p>Goals:</p>
+                    <img src="" alt="Image of top goals player" class="goals player-image">
+                    <p class="name-top-goalscorer"></p>
+                    <p class="number-of-goals"></p>
+                </div>
+
+                <div class="info-box">
+                    <p>Assists:</p>
+                    <img src="" alt="Image of top assists player" class="assists player-image">
+                    <p class="name-top-assists"></p>
+                    <p class="number-of-assists"></p>
+                </div>
+
+                <div class="info-box">
+                    <p>Red cards:</p>
+                    <img src="" alt="Image of most red cards player" class="red-cards player-image">
+                    <p class="name-top-red-cards"></p>
+                    <p class="number-of-red-cards"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./js/main.js"></script>
+</body>
+</html>
