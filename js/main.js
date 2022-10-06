@@ -2,7 +2,7 @@ import {options} from './api_information.js'
 
 // variables
 let leagueInput, yearInput
-let button, countryName, warning, leaguePhoto
+let button, warning, leaguePhoto, leaugeName
 let nameMostGoals, goals, imageGoals, nameMostAsists, assists, imageAssists,
  nameMostRedCards, redCards, imageRedCards
 const API_LINK = 'https://api-football-v1.p.rapidapi.com/v3/players'
@@ -36,47 +36,32 @@ const preapereDOMEvents = () => {
     button.addEventListener('click', getAllStatistics)
 }
 
-const mapLeagueToId = () => {
-    let id
+const checkInput = () => {
 
-    if (leagueInput.value === 'Premier League') {
-        id = 39
-    } else if (leagueInput.value === 'Ligue 1') {
-        id = 61
-    } else if (leagueInput.value === 'La Liga' || leagueInput.value === 'Primera Division') {
-        id = 25
-    } else if (leagueInput.value === 'Serie A') {
-        id = 135
-    } else if (leagueInput.value === 'Bundesliga') {
-        id = 78
+    let id, name
+
+    if (leagueInput.value.toLowerCase() === 'premier league') {
+        id = 39, name = "Premier League"
+    } else if (leagueInput.value.toLowerCase() === 'ligue 1') {
+        id = 61, name = "Ligue 1"
+    } else if (leagueInput.value.toLowerCase() === 'la liga' || leagueInput.value === 'primera division') {
+        id = 25, name = "La Liga"
+    } else if (leagueInput.value.toLowerCase() === 'serie a') {
+        id = 135, name = "Serie A"
+    } else if (leagueInput.value.toLowerCase() === 'bundesliga') {
+        id = 78, name = "Bundesliga"
+    } else {
+        id = -1, name = "Error"
     }
 
-    return id
-}
-
-// 1 - goals, 2 - assists, 3 - red cards
-const createGoodUrl = method => {
-
-    const URL = API_LINK
-
-    if (method === 1) {
-        URL += '/topscorers'
-    } else if (method === 2) {
-        URL += '/topassists'
-    } else if (method === 3) {
-        URL += '/topredcards'
-    }
-
-    const id = mapLeagueToId()
-    const season = yearInput.value
-    URL += `?league=${id}&season=${season}`
-
-    return URL
+    return [id, name]
 }
 
 const getGoals = () => {
 
-    const URL = createGoodUrl(1)
+    const id = checkInput()[0]
+    const seaseon = yearInput.value
+    const URL = API_LINK + '/topscorers' + `?league=${id}&season=${seaseon}`
 
     fetch(URL , options)
 	    .then(res => res.json())
@@ -91,12 +76,14 @@ const getGoals = () => {
             nameMostGoals.textContent = nameTopGoalscorer
             goals.textContent = numberOfGoals + '⚽'
         })
-	    .catch(err => console.error(err))
+	    .catch(err => console.log(err))
 }
 
 const getAssists = () => {
 
-    const URL = createGoodUrl(2)
+    const id = checkInput()[0]
+    const seaseon = yearInput.value
+    const URL = API_LINK + '/topassists' + `?league=${id}&season=${seaseon}`
 
     fetch(URL, options)
         .then(res => res.json())
@@ -114,7 +101,9 @@ const getAssists = () => {
 
 const getRedCards = () => {
 
-    const URL = createGoodUrl(3)
+    const id = checkInput()[0]
+    const seaseon = yearInput.value
+    const URL = API_LINK + '/topredcards' + `?league=${id}&season=${seaseon}`
 
     fetch(URL, options)
         .then(res => res.json())
@@ -132,7 +121,7 @@ const getRedCards = () => {
 
 const getAllStatistics = () => {
 
-    const allowed_leagues = ['Premier League', 'La Liga', 'Primera Division', 'Serie A', 'Bundesliga', 'Ligue 1']
+    const allowed_leagues = ['premier League', 'la liga', 'primera division', 'serie a', 'bundesliga', 'ligue 1']
 
     if (leagueInput.value === '' || yearInput.value === '') {
         warning.textContent = 'Podaj wszystkie dane'
@@ -141,9 +130,16 @@ const getAllStatistics = () => {
         getAssists()
         getRedCards()
 
-        leaugeName.textContent = leagueInput.value
+        leaugeName.textContent = checkInput()[1]
         leagueInput.value = ''
         yearInput.value = ''
+        warning.textContent = ''
+    }
+}
+
+const checkEnter = e => {
+    if (e.key === 'Enter') {
+        getAllStatistics()
     }
 }
 
