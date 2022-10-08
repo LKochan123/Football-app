@@ -45,7 +45,7 @@ const checkInput = () => {
     } else if (leagueInput.value.toLowerCase() === 'ligue 1') {
         id = 61, name = "Ligue 1"
     } else if (leagueInput.value.toLowerCase() === 'la liga' || leagueInput.value === 'primera division') {
-        id = 25, name = "La Liga"
+        id = 140, name = "La Liga"
     } else if (leagueInput.value.toLowerCase() === 'serie a') {
         id = 135, name = "Serie A"
     } else if (leagueInput.value.toLowerCase() === 'bundesliga') {
@@ -111,29 +111,31 @@ const getRedCards = () => {
             const imageTopRedCards = res.response[0].player.photo
             const nameTopRedCards = res.response[0].player.name
             const numberOfRedCards = res.response[0].statistics[0].cards.red
+            const numberOfYellowCards = res.response[0].statistics[0].cards.yellow
 
             imageRedCards.setAttribute('src', imageTopRedCards)
             nameMostRedCards.textContent = nameTopRedCards
-            redCards.textContent = numberOfRedCards + '🟥'
+            redCards.textContent = numberOfRedCards + '🟥' + ` ${numberOfYellowCards} 🟨`
         })
         .catch(err => console.log(err))
 }
 
 const getAllStatistics = () => {
 
-    const allowed_leagues = ['premier League', 'la liga', 'primera division', 'serie a', 'bundesliga', 'ligue 1']
+    const allowed_leagues = ['premier league', 'la liga', 'primera division', 'serie a', 'bundesliga', 'ligue 1']
+    const input1 = leagueInput.value, input2 = yearInput.value
+    const actualYear = 2022, lastYear = 2015
 
-    if (leagueInput.value === '' || yearInput.value === '') {
-        warning.textContent = 'Podaj wszystkie dane'
+    if (input1 === '' || input2 === '') {
+        warning.textContent = 'Enter all data'
+    } else if (!allowed_leagues.includes(input1.toLowerCase()) && input2 !== '') {
+        warning.textContent = 'Wrong league name'
+    } else if (allowed_leagues.includes(input1.toLowerCase()) && (input2 > 2022 || input2 < 2012)) {
+        warning.textContent = `League year must be from ${lastYear} - ${actualYear}`
     } else {
-        getGoals()
-        getAssists()
-        getRedCards()
-
+        getGoals(), getAssists(), getRedCards()
         leaugeName.textContent = checkInput()[1]
-        leagueInput.value = ''
-        yearInput.value = ''
-        warning.textContent = ''
+        leagueInput.value = '', yearInput.value = '', warning.textContent = ''
     }
 }
 
